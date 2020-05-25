@@ -1,0 +1,121 @@
+\documentclass{article}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{mathtext}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+
+\title{Capsule Based Aspect Extraction}
+\author{Kirill Krasikov}
+\date{May 2020}
+
+
+
+\begin{document}
+\maketitle
+\begin{abstract}
+    In the world of data science, more and more data is required to train models. Getting labeled datasets is a very expensive and lengthy process. In this regard, in the problems of thematic modeling, aspect extraction models from unplaced text is gaining popularity. These models allow, with minimal effort to annotate aspects, to structure the text into a set of topics or intentions. In this paper, a comparison is made of a SOTA model based on attention and a custom model in which the attention mechanism is replaced by a capsule network. Codes for paper: \url{https://github.com/KirillKrasikov/TopicModelingWithCapsNet}.
+\end{abstract}
+
+
+
+\section{Introduction}
+First of all, you will need to write the whole report in English, with a few exceptions mentioned below.
+This section is devoted to a problem motivation. You should answer the question of why the problem you were working on is important. Also, you should describe what is unique in your approach to this problem, what are the differences to other approaches.
+\subsection{Team}
+Please list your team members and describe their responsibilities. Example:
+
+\textbf{Valentin Malykh} prepared this document.
+
+
+
+\section{Related Work}
+\label{sec:related}
+In this section, you will describe in details the existing approaches to the problem you work on. For each approach, you need to provide a reference. 
+
+\cite{levenshtein1966binary} is a sample reference to the previous art. \cite{levenshtein1966dvoichnie} is a sample reference in Russian.
+
+\section{Model Description}
+Here you need to write a detailed description of your approach. It is important to mention that this description should give more details than the descriptions from section \ref{sec:related}\footnote{This is an example of internal references and footnotes at the same time.}. 
+
+You will likely be providing a figure to better present your approach. A sample circle is presented on Fig.~\ref{fig:circle}.
+
+The other possible contents of this section are formulae. They could be on a new line:
+$$S=\pi r^2,$$
+or they could be inline, e.g. if you want to describe the used variables, like $S$ is an area of a circle, while $r$ is its radius. 
+
+\begin{figure}[!tbh]
+    \centering
+    \includegraphics[width=0.3\linewidth]{circle.png}
+    \caption{A sample circle.}
+    \label{fig:circle}
+\end{figure}
+
+\section{Dataset}
+In this section, you need to describe the dataset(s) you are working with. 
+An example dataset we will use is WikiText-2. Please mention a paper where it was presented, e.g. WikiText-2 was presented in \cite{merity2017pointer}. Please provide guidance on how to obtain the dataset\footnote{The one way to do it is to include a link to the website, where it could be downloaded from. Like \href{https://blog.einstein.ai/the-wikitext-long-term-dependency-language-modeling-dataset/}{this}.}. It is important to mention that the dataset you use must be available for the research purposes. So please make sure about that.
+
+Your description will likely be including a table. On the Tab.~\ref{tab:statistics} you can see the statistics for the mentioned dataset. It is important to notice that there is a split of the dataset and this split is covered by the description.
+
+\begin{table}[tbh!]
+\begin{center}
+\begin{tabular}[t]{|l|ccc|}
+\hline
+%\cline{2-4}
+ & Train & Valid & Test \\
+\hline
+Articles & 600 & 60 & 60  \\
+Tokens& 2,088,628 & 217,646 & 245,569 \\
+Vocabulary size & \multicolumn{3}{c|}{33,278} \\
+Out of Vocab rate &  \multicolumn{3}{c|}{2.6\%}  \\
+\hline
+\end{tabular}
+\caption{Statistics of the WikiText-2. The out of vocabulary (OoV) rate notes what percentage of tokens have been replaced by an $\langle unk \rangle$ token. The token count includes newlines which add to the structure of the dataset.}
+\label{tab:statistics}
+\end{center}
+\end{table}
+
+If you were collecting the dataset on your own please describe the collection procedure, like criteria were used to filter the documents, the pre-processing steps, etc. It is nice if you release your dataset for the public. So please make sure that you have legal rights to collect and distribute the data you were working with. We recommend you to look at C4Corpus and how it is licensed to make your corpora. C4Corpus is described in \cite{habernal2016c4corpus}.
+
+\section{Experiments}
+This section should include several subsections.
+\subsection{Metrics}
+First of all, you should describe the metric(s) you were using to evaluate your approach. Most likely a metric description will include a formula.
+
+\subsection{Experiment Setup}
+Secondly, you need to describe the design of your experiment, e.g. how many runs there were, how the data split was done. The important details of your model, like hyper-parameters used in the experiments, and so on.
+
+\subsection{Baselines}
+Another important feature is that you could provide here the description of some simple approaches for your problem, like logistic regression over TF-IDF embedding for text classification. The baselines are needed is there is no previous art on the problem you are presenting.
+
+\section{Results}
+In this section, you need to list and describe the achieved results. It is crucial to have the results of the experiments for the other approaches. This is needed to be able to compare your results with some competitors. Most preferably, you should provide some references with results on the same problem.
+
+Almost inevitably the results are presented as a table, but it is also possible to have a graph, i.e. a figure.
+
+You need also to provide an interpretation of the presented results, to describe some features. E.g. your approach shows higher results on the short texts or by one metric instead of another.
+
+Also in this section, you could provide some results for your model inference. The samples could be found in Tab.~\ref{tab:output}.
+
+\begin{table}[!tbh]
+    \centering
+    \begin{tabular}{|c|}
+\hline
+Это пример вывода вашей модели на русском.\\
+This is a sample output of your model in English.
+\\
+\hline
+    \end{tabular}
+    \caption{Output samples.}
+    \label{tab:output}
+\end{table}
+
+\section{Conclusion}
+In this section, you need to describe all the work in short: what you have done and what has been achieved. E.g. you have collected a dataset, made a markup for it and developed a model showing the best results compared to other models. 
+
+\bibliographystyle{apalike}
+\bibliography{lit}
+\end{document}
