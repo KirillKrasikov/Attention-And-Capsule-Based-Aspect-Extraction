@@ -17,12 +17,15 @@
 \begin{document}
 \maketitle
 \begin{abstract}
-    In the world of data science, more and more data is required to train models. Getting labeled datasets is a very expensive and lengthy process. In this regard, in the problems of thematic modeling, aspect extraction models from unplaced text is gaining popularity. These models allow, with minimal effort to annotate aspects, to structure the text into a set of topics or intentions. In this paper, a comparison is made of a SOTA model based on attention and a custom model in which the attention mechanism is replaced by a capsule network. Codes for paper: \url{https://github.com/KirillKrasikov/TopicModelingWithCapsNet}.
+    In the world of data science, more and more data is required to train models. Getting labeled datasets is a very expensive and lengthy process. In this regard, in the problems of thematic modeling, aspect extraction models from unplaced text is gaining popularity. These models allow, with minimal effort to annotate aspects, to structure the text into a set of topics or intentions. In this paper, a comparison is made of a SotA model based on attention and a custom model in which the attention mechanism is replaced by a capsule network with dynamic routings.
+    Codes for paper: \url{https://github.com/KirillKrasikov/TopicModelingWithCapsNet}.
 \end{abstract}
 
 
 
 \section{Introduction}
+Aspect extraction is an important and challenging task in aspect-based sentiment analysis. For example, in the sentence "The beef was tender and melted in my mouth", the aspect term is "beef". Two sub-tasks are performed in aspects extraction: (1) extracting all aspects terms(e.g., "beef") from a review corpus, (2) clustering aspect terms with similar meaning into categories where each category represents a single aspect(e.g., cluster "beef", "pork", "pasta", and "tomato" into one aspect food) \cite{He2018ABAE}.
+
 First of all, you will need to write the whole report in English, with a few exceptions mentioned below.
 This section is devoted to a problem motivation. You should answer the question of why the problem you were working on is important. Also, you should describe what is unique in your approach to this problem, what are the differences to other approaches.
 \subsection{Team}
