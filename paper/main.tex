@@ -1,120 +1,216 @@
-\documentclass{article}
-\usepackage{amsmath,amsthm,amssymb}
-\usepackage{mathtext}
-\usepackage[T2A]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
-\usepackage{graphicx}
-\usepackage{hyperref}
+@article{He2018ABAE,
+title={An Unsupervised Neural Attention Model for Aspect Extraction},
+author={Ruidan He, Wee Sun Lee, Hwee Tou Ng, Daniel Dahlmeirer},
+year={2017},
+}
 
+@article{Mikolov2013W2V,
+title={Efficient Estimation of Word Representations in Vector Space},
+author={Tomas Mikolov, Kai Chen, Greg Corrado, Jeffrey Dean},
+year={2017},
+}
 
-\title{Capsule Based Aspect Extraction}
-\author{Kirill Krasikov}
-\date{May 2020}
+@article{Bahdanau2015NMT,
+title={Neural Machine Translation by Jointly Learning to Align and Translate},
+author={Dzmitry Bahdanau, Kyunghyun Cho, Yoshua Bengio},
+year={2015},
+}
 
+@article{Hinton2017DRBC,
+title={Dynamic Routing Between Capsules},
+author={Sara Sabour, Nicholas Frosst, Geoffrey E Hinton},
+year={2017},
+}
 
+@article{Ganu2009BeyondTheStars,
+title={Beyond the Stars: Improving Rating Predictions using Review Text Content},
+author={Gayatree Ganu, Noemie Elhadad, Amelie Marian},
+year={2009},
+booktitle={Proceedings of the 12th International Workshop on the Web and Databases},
+}
 
-\begin{document}
-\maketitle
-\begin{abstract}
-    In the world of data science, more and more data is required to train models. Getting labeled datasets is a very expensive and lengthy process. In this regard, in the problems of thematic modeling, aspect extraction models from unplaced text is gaining popularity. These models allow, with minimal effort to annotate aspects, to structure the text into a set of topics or intentions. In this paper, a comparison is made of a SotA model based on attention and a custom model in which the attention mechanism is replaced by a capsule network with dynamic routings.
-    Codes for paper: \url{https://github.com/KirillKrasikov/TopicModelingWithCapsNet}.
-\end{abstract}
+@article{Zhao2010JMA,
+title={Jointly modeling aspects and opinions with a MaxEnt-LDA hybrid},
+author={Wayne Xin Zhao, Jing Jiang, Hongfei Yan, Xiaoming Li},
+year={2010},
+booktitle={Proceedings of the 2010 Conference on Emperical Methods in Natural Language Processing}
+}
 
+@article{HuLiu2004,
+title={Mining and summarizing customer reviews},
+author={Minqing Hu, Bing Liu},
+year={2004},
+booktitle={Proceedings of the 10th ACM SIGKDD International Conference on Knowledge Dicovery and Data Mining}
+}
 
+@article{Zhuang2006,
+title={Movie review mining and summarization},
+author={Li Zhuang, Feng Jing, Xiao-Yan Zhu},
+year={2006},
+booktitle={Proceedings of the 15th ACM International Conference on Information and Knowledge Management}
+}
 
-\section{Introduction}
-Aspect extraction is an important and challenging task in aspect-based sentiment analysis. For example, in the sentence "The beef was tender and melted in my mouth", the aspect term is "beef". Two sub-tasks are performed in aspects extraction: (1) extracting all aspects terms(e.g., "beef") from a review corpus, (2) clustering aspect terms with similar meaning into categories where each category represents a single aspect(e.g., cluster "beef", "pork", "pasta", and "tomato" into one aspect food) \cite{He2018ABAE}. in 2017 year, Unsupervised Aspect Extraction \cite{He2018ABAE} have become the dominant unsupervised approach for aspect extraction. In that work neural word embeddings map words with the same context to nearby points in the embedding space \cite{Mikolov2013W2V}. Then attention mechanism \cite{Bahdanau2015NMT} filter the word embeddings within a sentence and filtered words use to construct aspect embeddings. The training process for aspect embeddings is analogous to autoencoders, where dimension reduction use to extract the common factors among embedded sentences and reconstruct each sentence through a linear combination of aspect embeddings. The attention mechanism deemphasizes words that are not part of any aspects, allowing the model to focus on aspect words. That model call \textit{Attention-based Aspect Extraction} (ABAE). In the same year "Google brain" suggested approach called \textit{Dynamic Routing Between Capsules} \cite{Hinton2017DRBC}. A capsule is a group of neurons whose activity vector represents the instantiation parameters of a specific type of entity such as an object or an object part. The length of the activity vector use to represent the probability that the entity exists and its orientation use to represent the instantiation parameters. Active capsules at one level make predictions, via transformation matrices, for the instantiation parameters of higher-level capsules. When multiple predictions agree, a higher level capsule becomes active. To best performance use iterative routing-by-agreement mechanism: A lower-level capsule prefers to send its output to higher level capsules whose activity vectors have a big scalar product with the prediction coming from the lower-level capsule \cite{Hinton2017DRBC}. In this work i implement ABAE model using pytorch, then change attention mechanism to capsule network and evaluate this models on Citysearch corpus used by previous works\cite{Ganu2009BeyondTheStars}\cite{Brody2010UAS}\cite{Zhao2010JMA}\cite{He2018ABAE}.
+@article{Somasundarn2009,
+title={Recognizing stances in online debates},
+author={Swapna Somasundaran, Janyce Wiebe},
+year={2009},
+booktitle={Proceedings of the Joint Conference of the 47th Annual Meeting of the ACL and the 4th International Joint Conference on Natural Language Processing of the AFNLP}
+}
 
+@article{Qiu2011,
+title={Opinion word expansion and target extraction thorugh double propagation},
+author={Guang Qiu, Bing Liu, Jiajun Bu, Chun Chen},
+year={2011},
+journal={Computation Linguistics},
+volume={37},
+pages={9-27}
+}
 
-\section{Related Work}
-\label{sec:related}
-The problem of aspect extraction has been well studied in the past decade. Initially, methods were mainly based on manually defined rules. \cite{HuLiu2004} proposed to extract different product features through finding frequent nouns and noun phrases. They also extracted opinion terms by finding the synonyms and antonyms of opinion seed words through WordNet. Following this, a number of methods have been proposed based on freequent item mining and dependency information to extract product aspects \cite{Zhuang2006} \cite{Somasundarn2009} \cite{Qiu2011}. These models heavily depend on predefined rules which work well only when the aspect terms are restricted to a small group of nouns. Supervised learning approaches generally model aspect extraction as a standard sequence labeling problem. \cite{Jin2009} \cite{Li2010} proposed to use hidden Markov models(HMM) and conditional random fields(CRF) respectively with a set of manually-extracted features. More recently, different neural models \cite{Yin2016} \cite{Wang2016} were proposed to automatically learn features for CRF-based aspect extraction. Rule-based models are usually not refined enough to categorize the extracted aspect terms. On the other hand, supervised learning requires large amounts of labeled data for training purposes.
+@article{Jin2009,
+title={A novel lexicallized HMM-based learning frameworks for web opinion mining},
+author={Wei Jin, Huang Hay Ho},
+year={2009},
+booktitle={Proceedings of the 26th International Conference on Machine Learning}
+}
 
-Unsupervised approaches, especially topic models, have been proposed subsequently to avoid reliance on labeled data. Generally, the outputs of those models are word distributions or rankings for each aspect. Aspects are naturally obtained without separately performing extraction and categorization. Most existing works \cite{Brody2010UAS} \cite{Zhao2010JMA} \cite{Mukherjee2012} \cite{Chen2014} are based on variants and extensions of LDA \cite{Blei2003}. Recently, \cite{Wang2015} relies on a substantial amount of prior knowledge such as part-of-speech(POS) tagging and sentiment lexicons. A biterm topic models (BTM) that generates co-occurring word pairs was proposed in \cite{Yan2013}.
+@article{Li2010,
+title={Structure-aware review mining and summarization},
+author={Fangtao Li, Chao Han, Minlie Huang, Xiaoyan Zhu, Ying-Ju Xia, Shu Zang, Hao Yu},
+year={2010},
+booktitle={Proceedings of the 23rd International Conference on Computer Linguistics}
+}
 
-Attention models \cite{Mnih2014} have recently gained popularity in training neural networks and have been applied to various natural language processing tasks, including machine translation \cite{Bahdanau2015NMT}, sentence summarization \cite{Rush2015}, sentiment classification
+@article{Li2010,
+title={Structure-aware review mining and summarization},
+author={Fangtao Li, Chao Han, Minlie Huang, Xiaoyan Zhu, Ying-Ju Xia, Shu Zang, Hao Yu},
+year={2010},
+booktitle={Proceedings of the 23rd International Conference on Computer Linguistics}
+}
 
-\cite{levenshtein1966binary} is a sample reference to the previous art. \cite{levenshtein1966dvoichnie} is a sample reference in Russian.
+@article{Yin2016,
+title={Unsupervised word and dependency path embeddings for aspect term extraction},
+author={Yichun Yin, Furu Wei, Li Dong, Kaiming Xu, Ming Zhang Ming Zhou},
+year={2016},
+booktitle={Proceedings of the 25th International Joint Conference on Artificial Intelligence}
+}
 
-\section{Model Description}
-Here you need to write a detailed description of your approach. It is important to mention that this description should give more details than the descriptions from section \ref{sec:related}\footnote{This is an example of internal references and footnotes at the same time.}. 
+@article{Wang2016,
+title={Recursive neural conditional random fields for aspect-based sentiment analysis},
+author={Wenya Wang, Sinno J. Pan, Daniel Dahlmeier, Xiaokui Xiao},
+year={2016},
+booktitle={Proceedings of the 2016 Conference on Empirical Methods in Natural Language Processing}
+}
 
-You will likely be providing a figure to better present your approach. A sample circle is presented on Fig.~\ref{fig:circle}.
+@article{Brody2010UAS,
+title={An unsupervised aspect-sentiment model for online reviews},
+author={Samuel Brody, Noemie Elhadad},
+year={2010},
+booktitle={Human Language Technologies: The 2010 Annual Conference of the North American Chapter of the Association for Computational Linguistics}
+}
 
-The other possible contents of this section are formulae. They could be on a new line:
-$$S=\pi r^2,$$
-or they could be inline, e.g. if you want to describe the used variables, like $S$ is an area of a circle, while $r$ is its radius. 
+@article{Mukherjee2012,
+title={Aspect extraction through semi-supervised modelling},
+author={Arjun Mukkerjee, Bing Liu},
+year={2012},
+booktitle={Proceedings of the 50th Annual Meetings of the Association for Computational Linguistics}
+}
 
-\begin{figure}[!tbh]
-    \centering
-    \includegraphics[width=0.3\linewidth]{circle.png}
-    \caption{A sample circle.}
-    \label{fig:circle}
-\end{figure}
+@article{Chen2014,
+title={Aspect extraction with automated prior knowledge learning},
+author={Zhiyuan Chen, Arjun Mukherjee, Bing Liu},
+year={2014},
+booktitle={Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics}
+}
 
-\section{Dataset}
-In this section, you need to describe the dataset(s) you are working with. 
-An example dataset we will use is WikiText-2. Please mention a paper where it was presented, e.g. WikiText-2 was presented in \cite{merity2017pointer}. Please provide guidance on how to obtain the dataset\footnote{The one way to do it is to include a link to the website, where it could be downloaded from. Like \href{https://blog.einstein.ai/the-wikitext-long-term-dependency-language-modeling-dataset/}{this}.}. It is important to mention that the dataset you use must be available for the research purposes. So please make sure about that.
+@article{Blei2003,
+title={Latent Dirichlet allocation},
+author={David Blei, Andrew Ng, Michael Jordan},
+year={2003},
+journal={Jornal of Machine Learning research},
+volume={3},
+pages={993-1022}
+}
 
-Your description will likely be including a table. On the Tab.~\ref{tab:statistics} you can see the statistics for the mentioned dataset. It is important to notice that there is a split of the dataset and this split is covered by the description.
+@article{Wang2015,
+title={Sentiment-aspect extraction based on restricted Boltzmann machines},
+author={Linlin Wang, Kang Liu, Zhu Cao, Jun Zhao, Gerrard de Malo},
+year={2015},
+booktitle={Proceedings of the 53rd Annual Meeting of the Association for Computational Linguistics and the 7th International Joint Conference on Natural Language Processing}
+}
 
-\begin{table}[tbh!]
-\begin{center}
-\begin{tabular}[t]{|l|ccc|}
-\hline
-%\cline{2-4}
- & Train & Valid & Test \\
-\hline
-Articles & 600 & 60 & 60  \\
-Tokens& 2,088,628 & 217,646 & 245,569 \\
-Vocabulary size & \multicolumn{3}{c|}{33,278} \\
-Out of Vocab rate &  \multicolumn{3}{c|}{2.6\%}  \\
-\hline
-\end{tabular}
-\caption{Statistics of the WikiText-2. The out of vocabulary (OoV) rate notes what percentage of tokens have been replaced by an $\langle unk \rangle$ token. The token count includes newlines which add to the structure of the dataset.}
-\label{tab:statistics}
-\end{center}
-\end{table}
+@article{Yan2013,
+title={A biterm topic model for short texts},
+author={Xiaohui Yan, Jiafeng Guo, Yanyan Lan, Xueqi Cheng},
+year={2013},
+booktitle={Proceedings of the 22nd International World Wide Web Conference}
+}
 
-If you were collecting the dataset on your own please describe the collection procedure, like criteria were used to filter the documents, the pre-processing steps, etc. It is nice if you release your dataset for the public. So please make sure that you have legal rights to collect and distribute the data you were working with. We recommend you to look at C4Corpus and how it is licensed to make your corpora. C4Corpus is described in \cite{habernal2016c4corpus}.
+@article{Mnih2014,
+title={Recurrent models of visual attention},
+author={Volodymyr Mnih, Nicolas Heess, Alex Graves, Koray Kavukcuoglu},
+year={2014},
+booktitle={Advanced in Neural information Processing Systems}
+}
 
-\section{Experiments}
-This section should include several subsections.
-\subsection{Metrics}
-First of all, you should describe the metric(s) you were using to evaluate your approach. Most likely a metric description will include a formula.
+@article{Rush2015,
+title={A neural attention model for sentence summarization},
+author={Alexander Rush, Sumit Chopa, Jason Weston},
+year={2015},
+booktitle={Proceeding of the 2015 Conference on Emperical Methods in Natural Language Processing}
+}
 
-\subsection{Experiment Setup}
-Secondly, you need to describe the design of your experiment, e.g. how many runs there were, how the data split was done. The important details of your model, like hyper-parameters used in the experiments, and so on.
+@article{Chen2016,
+title={Neural sentiment classification with user and product attention},
+author={Huimi Chen, Maosong Sun, Cunchao Tu, Yankai Lin, Zhiyuan Liu},
+year={2016},
+booktitle={Proceeding of the 2016 Conference on Emperical Methods in Natural Language Processing}
+}
 
-\subsection{Baselines}
-Another important feature is that you could provide here the description of some simple approaches for your problem, like logistic regression over TF-IDF embedding for text classification. The baselines are needed is there is no previous art on the problem you are presenting.
+@article{Herman2015,
+title={Teaching machines to read and comperhend},
+author={Karl Mortiz Hermann, Tomas Kocisky, Edward Grefenstette, Lasse Espeholt, Will Kay, Mustafa Suleyman, Phil Blunsom},
+year={2015},
+booktitle={Advanced in Neural Information Processing System}
+}
 
-\section{Results}
-In this section, you need to list and describe the achieved results. It is crucial to have the results of the experiments for the other approaches. This is needed to be able to compare your results with some competitors. Most preferably, you should provide some references with results on the same problem.
+@article{Zhao2018,
+title={Investigationg Capsule Network with Dynamic ROuting for Text Classification},
+author={Wei Zhao, Jiambo Ye, Min Yang, Zeyang Lei, Suofei Zhang, Zhou Zhao},
+year={2018}
+}
 
-Almost inevitably the results are presented as a table, but it is also possible to have a graph, i.e. a figure.
+@article{levenshtein1966binary,
+title={Binary Codes Capable of Correcting Deletions, Insertions and Reversals},
+author={Levenshtein, Vladimir I.},
+year={1966},
+month={February},
+journal={Soviet Physics Doklady},
+volume={10},
+pages={709}
+}
 
-You need also to provide an interpretation of the presented results, to describe some features. E.g. your approach shows higher results on the short texts or by one metric instead of another.
+@article{levenshtein1966dvoichnie,
+title={Двоичные коды с исправлением выпадений, вставок и замещений символов},
+author={Левенштейн, {\CYRV}ладимир {\CYRI}осифович.},
+year={1966},
+month={February},
+journal={Доклады Академий Наук СССР},
+volume={163},
+pages={845--848},
+number={4}
+}
 
-Also in this section, you could provide some results for your model inference. The samples could be found in Tab.~\ref{tab:output}.
+@inproceedings{merity2017pointer,
+  title={Pointer sentinel mixture models},
+  author={Merity, Stephen and Xiong, Caiming and Bradbury, James and Socher, Richard},
+  booktitle={Proceedings of International Conference of Learning Representation},
+  year={2017}
+}
 
-\begin{table}[!tbh]
-    \centering
-    \begin{tabular}{|c|}
-\hline
-Это пример вывода вашей модели на русском.\\
-This is a sample output of your model in English.
-\\
-\hline
-    \end{tabular}
-    \caption{Output samples.}
-    \label{tab:output}
-\end{table}
-
-\section{Conclusion}
-In this section, you need to describe all the work in short: what you have done and what has been achieved. E.g. you have collected a dataset, made a markup for it and developed a model showing the best results compared to other models. 
-
-\bibliographystyle{apalike}
-\bibliography{lit}
-\end{document}
+@inproceedings{habernal2016c4corpus,
+  title={C4Corpus: Multilingual Web-size corpus with free license},
+  author={Habernal, Ivan and Zayed, Omnia and Gurevych, Iryna},
+  booktitle={Proceedings of the Tenth International Conference on Language Resources and Evaluation (LREC'16)},
+  pages={914--922},
+  year={2016}
+}
