@@ -29,13 +29,15 @@ Aspect extraction is an important and challenging task in aspect-based sentiment
 
 \section{Related Work}
 \label{sec:related}
-The problem of aspect extraction has been well studied in the past decade. Initially, methods were mainly based on manually defined rules. \cite{HuLiu2004} proposed to extract different product features through finding frequent nouns and noun phrases. They also extracted opinion terms by finding the synonyms and antonyms of opinion seed words through WordNet. Following this, a number of methods have been proposed based on freequent item mining and dependency information to extract product aspects \cite{Zhuang2006} \cite{Somasundarn2009} \cite{Qiu2011}. These models heavily depend on predefined rules which work well only when the aspect terms are restricted to a small group of nouns. Supervised learning approaches generally model aspect extraction as a standard sequence labeling problem. \cite{Jin2009} \cite{Li2010} proposed to use hidden Markov models(HMM) and conditional random fields(CRF) respectively with a set of manually-extracted features. More recently, different neural models \cite{Yin2016} \cite{Wang2016} were proposed to automatically learn features for CRF-based aspect extraction. Rule-based models are usually not refined enough to categorize the extracted aspect terms. On the other hand, supervised learning requires large amounts of labeled data for training purposes.
+The problem of aspect extraction has been well studied in the past decade. Initially, methods were mainly based on manually defined rules. \cite{HuLiu2004} proposed to extract different product features through finding frequent nouns and noun phrases. They also extracted opinion terms by finding the synonyms and antonyms of opinion seed words through WordNet. Following this, a number of methods have been proposed based on freequent item mining and dependency information to extract product aspects \cite{Zhuang2006}
+\cite{Somasundarn2009} \cite{Qiu2011}. These models heavily depend on predefined rules which work well only when the aspect terms are restricted to a small group of nouns. Supervised learning approaches generally model aspect extraction as a standard sequence labeling problem. \cite{Jin2009} \cite{Li2010} proposed to use hidden Markov models(HMM) and conditional random fields(CRF) respectively with a set of manually-extracted features. More recently, different neural models \cite{Yin2016} \cite{Wang2016} were proposed to automatically learn features for CRF-based aspect extraction. Rule-based models are usually not refined enough to categorize the extracted aspect terms. On the other hand, supervised learning requires large amounts of labeled data for training purposes.
 
-Unsupervised approaches, especially topic models, have been proposed subsequently to avoid reliance on labeled data. Generally, the outputs of those models are word distributions or rankings for each aspect. Aspects are naturally obtained without separately performing extraction and categorization. Most existing works \cite{Brody2010UAS} \cite{Zhao2010JMA} \cite{Mukherjee2012} \cite{Chen2014} are based on variants and extensions of LDA \cite{Blei2003}. Recently, \cite{Wang2015} relies on a substantial amount of prior knowledge such as part-of-speech(POS) tagging and sentiment lexicons. A biterm topic models (BTM) that generates co-occurring word pairs was proposed in \cite{Yan2013}.
+Unsupervised approaches, especially topic models, have been proposed subsequently to avoid reliance on labeled data. Generally, the outputs of those models are word distributions or rankings for each aspect. Aspects are naturally obtained without separately performing extraction and categorization. Most existing works \cite{Brody2010UAS} \cite{Zhao2010JMA} \cite{Mukherjee2012} \cite{Chen2014} are based on variants and extensions of LDA
+\cite{Blei2003}. Recently, \cite{Wang2015} relies on a substantial amount of prior knowledge such as part-of-speech(POS) tagging and sentiment lexicons. A biterm topic models (BTM) that generates co-occurring word pairs was proposed in \cite{Yan2013}.
 
 Attention models \cite{Mnih2014} have recently gained popularity in training neural networks and have been applied to various natural language processing tasks, including machine translation \cite{Bahdanau2015NMT}, sentence summarization \cite{Rush2015}, sentiment classification \cite{Chen2016} and question answering \cite{Herman2015}. Rather than using all available inforamtion, attention mechanism aims to focus on the most pertinent information for a task. \cite{He2018ABAE} apply attention to an unsupervised neural model and demonstrate its effectiveness for aspect extraction.
 
-\cite{Zhao2018} explore capsule networks with dynamic routing process \cite{Hinton2017DRBC} for supervised text classification. In this work i apply capsule network with dynamic routing to unsupervised neural model and evaluate experimental results with ABAE and others aspect extraction models. 
+\cite{Zhao2018} explore capsule networks with dynamic routing process \cite{Hinton2017DRBC} for supervised text classification. In this work i apply capsule network with dynamic routing to unsupervised neural model and evaluate experimental results with ABAE and others aspect extraction models.
 
 \section{Model Description}
 
@@ -44,7 +46,7 @@ Each input sample to CBAE is a list of indexes for words in a review sentence. F
 
 \subsection{Sentence Embedding and Capsule Network with dynamic routing}
 
-Capsule network, depicted in Fig.~\ref{fig:capsule} get sentence embedding vector to input. It consists of four layers: n-gram convolutional layer, primary capsule layer, secondary capsule layer and fully connected capsule layer. 
+Capsule network, depicted in Fig.~\ref{fig:capsule} get sentence embedding vector to input. It consists of four layers: n-gram convolutional layer, primary capsule layer, secondary capsule layer and fully connected capsule layer.
 
 \begin{figure}[!tbh]
     \centering
@@ -89,14 +91,27 @@ Tab.~\ref{tab:aspects} presents all 14 aspects inferred by CBAE. The inferrent a
 
 \begin{table}[tbh!]
 \begin{center}
-\begin{tabular}[t]{l|l|l}
+\begin{tabular}[t]{l|l}
 \hline
- Inferred Aspects & Representative Words & Gold Aspects \\
+Representative Words & Aspects \\
 \hline
-todo & todo & todo  \\
+chicken potato onion tomato sauce & food  \\
+highly grilled seared roasted shrimp & food  \\
+pay money leave didn order & price  \\
+minute asked manager seated waiter & staff  \\
+wall room space ceiling lit & ambience  \\
+dish menu entree course flavor & food  \\
+birthday saturday reservation friend friday & anecdotes  \\
+year ny experience life nyc & miscellaneous  \\
+service staff waitstaff attentive friendly & staff  \\
+month time minute week hour & miscellaneous  \\
+drink wine sangria nice perfect & food  \\
+gras crust rib pork foie & food  \\
+chocolate butter fruit sauce sweet & food  \\
+chinese japanese american mexican indian & food  \\
 \hline
 \end{tabular}
-\caption{List of inferred aspects for restaurant reviews (left), with top representative words for each inferred aspect (middle), and the corresponding gold-standard aspect labels (right). Inferred aspect labels (left) were assigned manually.}
+\caption{List of top representative words for each aspect (left), and aspect labels (right). Aspect labels (right) were assigned manually.}
 \label{tab:aspects}
 \end{center}
 \end{table}
